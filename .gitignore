@@ -51,3 +51,5 @@ buildNumber.properties
 .history
 
 # End of https://www.gitignore.io/api/java,maven,visualstudiocode
+api/.sts4-cache/classpath-data.json
+api/.factorypath
