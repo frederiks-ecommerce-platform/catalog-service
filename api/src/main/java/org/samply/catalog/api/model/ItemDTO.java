@@ -1,9 +1,12 @@
 package org.samply.catalog.api.model;
 
 import java.math.BigDecimal;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import lombok.Value;
 
 @Value(staticConstructor = "of")
+@Schema(title = "ItemResponse")
 public class ItemDTO {
 
     private final ItemId id;
