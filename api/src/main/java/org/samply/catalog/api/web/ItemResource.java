@@ -1,4 +1,4 @@
-package org.samply.catalog.api;
+package org.samply.catalog.api.web;
 
 import static javax.ws.rs.core.Response.Status.CREATED;
 import static org.eclipse.microprofile.openapi.annotations.enums.SchemaType.ARRAY;

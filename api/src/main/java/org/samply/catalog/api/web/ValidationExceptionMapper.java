@@ -1,4 +1,4 @@
-package org.samply.catalog.api;
+package org.samply.catalog.api.web;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import java.util.List;
