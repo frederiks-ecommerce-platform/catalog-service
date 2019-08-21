@@ -9,11 +9,16 @@ phases:
       - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
       - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
       - apt-get update -y
-      - apt-get install -y maven
+      - apt-get install -y maven curl
   pre_build:
     commands:
       - echo logging in to AWS ECR...
+      - curl -sS -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/aws-iam-authenticator
+      - curl -sS -o kubectl https://amazon-eks.s3-eu-central-1.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/kubectl
+      - chmod +x ./kubectl ./aws-iam-authenticator
       - $(aws ecr get-login --no-include-email --region eu-central-1)
+      - curl -L https://git.io/get_helm.sh | bash
+      - helm init
   build:
     commands:
       - mvn -B clean package
@@ -24,4 +29,4 @@ phases:
     commands:
       - echo push latest Docker images to ECR...
       - docker push 172099792315.dkr.ecr.eu-central-1.amazonaws.com/samply/catalog-api:latest
-      - helm version
+      # https://de.slideshare.net/AmazonWebServices/from-code-to-a-running-container-aws-summit-tel-aviv-2019-137469017
