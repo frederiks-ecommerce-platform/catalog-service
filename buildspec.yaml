@@ -24,3 +24,4 @@ phases:
     commands:
       - echo push latest Docker images to ECR...
       - docker push 172099792315.dkr.ecr.eu-central-1.amazonaws.com/samply/catalog-api:latest
+      - helm version
