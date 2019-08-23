@@ -8,8 +8,7 @@ phases:
       - echo Entered the install phase...
       - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
       - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
-      - apt-get update -y
-      - apt-get install -y maven curl
+      - apt-get update && apt-get -y install jq python3-pip python3-dev maven curl && pip3 install --upgrade awscli
   pre_build:
     commands:
       - echo logging in to AWS ECR...
@@ -24,7 +23,7 @@ phases:
       - export AWS_SECRET_ACCESS_KEY="$(echo ${CREDENTIALS} | jq -r '.Credentials.SecretAccessKey')"
       - export AWS_SESSION_TOKEN="$(echo ${CREDENTIALS} | jq -r '.Credentials.SessionToken')"
       - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
-      - env
+      - aws eks update-kubeconfig --name cmand
       - kubectl config view
       - kubectl auth can-i get pods
       - kubectl get pods
