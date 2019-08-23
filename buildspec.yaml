@@ -23,7 +23,7 @@ phases:
       - export AWS_SECRET_ACCESS_KEY="$(echo ${CREDENTIALS} | jq -r '.Credentials.SecretAccessKey')"
       - export AWS_SESSION_TOKEN="$(echo ${CREDENTIALS} | jq -r '.Credentials.SessionToken')"
       - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
-      - aws eks update-kubeconfig --name cmand
+      - aws eks update-kubeconfig --name cmand --role-arn arn:aws:iam::172099792315:role/service-role/SamplyCodeBuildServiceRole
       - kubectl config view
       - kubectl auth can-i get pods
       - kubectl get pods
