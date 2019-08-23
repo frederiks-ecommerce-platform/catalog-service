@@ -18,7 +18,7 @@ phases:
       - curl -sS -o kubectl https://amazon-eks.s3-eu-central-1.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/kubectl
       - chmod +x ./kubectl ./aws-iam-authenticator
       - aws sts get-caller-identity
-      - aws eks update-kubeconfig --name cmand
+      - aws eks update-kubeconfig --name cmand --role-arn arn:aws:iam::172099792315:role/service-role/SamplyCodeBuildServiceRole
       - kubectl config view
       - curl -L https://git.io/get_helm.sh | bash
       - helm init --service-account tiller --debug
