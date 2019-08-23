@@ -19,6 +19,7 @@ phases:
       - chmod +x ./kubectl ./aws-iam-authenticator
       - aws sts get-caller-identity
       - aws eks update-kubeconfig --name cmand
+      - kubectl config view
       - curl -L https://git.io/get_helm.sh | bash
       - helm init --service-account tiller --debug
   build:
