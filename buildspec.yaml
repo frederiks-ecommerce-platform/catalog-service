@@ -20,7 +20,7 @@ phases:
       - aws sts get-caller-identity
       - aws eks update-kubeconfig --name cmand
       - curl -L https://git.io/get_helm.sh | bash
-      - helm init
+      - helm init --service-account tiller
   build:
     commands:
       - mvn -B clean package
