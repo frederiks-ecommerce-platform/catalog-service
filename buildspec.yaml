@@ -17,6 +17,7 @@ phases:
       - curl -sS -o kubectl https://amazon-eks.s3-eu-central-1.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/kubectl
       - chmod +x ./kubectl ./aws-iam-authenticator
       - $(aws ecr get-login --no-include-email --region eu-central-1)
+      - aws eks update-kubeconfig --name cmand
       - curl -L https://git.io/get_helm.sh | bash
       - helm init
   build:
