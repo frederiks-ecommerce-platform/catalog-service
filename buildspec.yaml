@@ -13,11 +13,12 @@ phases:
   pre_build:
     commands:
       - echo logging in to AWS ECR...
+      - $(aws ecr get-login --no-include-email --region eu-central-1)
       - curl -sS -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/aws-iam-authenticator
       - curl -sS -o kubectl https://amazon-eks.s3-eu-central-1.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/kubectl
       - chmod +x ./kubectl ./aws-iam-authenticator
-      - $(aws ecr get-login --no-include-email --region eu-central-1)
-      - aws eks update-kubeconfig --name cmand
+      - aws sts get-caller-identity
+      - aws eks update-kubeconfig --name cmand --role-arn arn:aws:iam::172099792315:role/service-role/codebuild-sample-catalog-api-service-role
       - curl -L https://git.io/get_helm.sh | bash
       - helm init
   build:
