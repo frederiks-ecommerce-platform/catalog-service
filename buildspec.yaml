@@ -33,7 +33,7 @@ phases:
   build:
     commands:
       - mvn -B clean package
-      - docker build -f src/main/docker/Dockerfile.jvm -t catalog-api:${VERSION} ./api
+      - docker build -f api/src/main/docker/Dockerfile.jvm -t catalog-api:${VERSION} ./api
       - docker tag catalog-api:${VERSION} 172099792315.dkr.ecr.eu-central-1.amazonaws.com/samply/catalog-api:latest
       - helm package ./helm/catalog-api --version ${VERSION}
   post_build:
