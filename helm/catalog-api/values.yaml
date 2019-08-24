@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: 172099792315.dkr.ecr.eu-central-1.amazonaws.com/samply/catalog-api
-  tag: latest
+  tag: "{{ .Chart.AppVersion }}"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
