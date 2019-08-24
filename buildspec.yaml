@@ -17,26 +17,28 @@ phases:
       - curl -sS -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/aws-iam-authenticator
       - curl -sS -o kubectl https://amazon-eks.s3-eu-central-1.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/kubectl
       - chmod +x ./kubectl ./aws-iam-authenticator
-      - aws sts get-caller-identity
       - CREDENTIALS=$(aws sts assume-role --role-arn arn:aws:iam::172099792315:role/EKSDeployment --role-session-name codebuild-kubectl --duration-seconds 900)
       - export AWS_ACCESS_KEY_ID="$(echo ${CREDENTIALS} | jq -r '.Credentials.AccessKeyId')"
       - export AWS_SECRET_ACCESS_KEY="$(echo ${CREDENTIALS} | jq -r '.Credentials.SecretAccessKey')"
       - export AWS_SESSION_TOKEN="$(echo ${CREDENTIALS} | jq -r '.Credentials.SessionToken')"
       - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
       - aws eks update-kubeconfig --name cmand
-      - kubectl config view
-      - kubectl auth can-i get pods
-      - kubectl get pods
       - curl -L https://git.io/get_helm.sh | bash
       - helm init --service-account tiller --debug
+      - helm plugin install https://github.com/hypnoglow/helm-s3.git
+      - helm s3 init s3://samply-helm-charts/charts
+      - helm repo add samply-charts s3://samply-helm-charts/charts
+      - export VERSION=${CODEBUILD_SOURCE_VERSION}
+      - echo $VERSION
   build:
     commands:
       - mvn -B clean package
-      - cd api
-      - docker build -f src/main/docker/Dockerfile.jvm -t catalog-api:latest .
-      - docker tag catalog-api:latest 172099792315.dkr.ecr.eu-central-1.amazonaws.com/samply/catalog-api:latest
+      - docker build -f src/main/docker/Dockerfile.jvm -t catalog-api:${VERSION} ./api
+      - docker tag catalog-api:${VERSION} 172099792315.dkr.ecr.eu-central-1.amazonaws.com/samply/catalog-api:${VERSION}
+      - helm package ./helm/catalog-api --version ${VERSION}
   post_build:
     commands:
       - echo push latest Docker images to ECR...
-      - docker push 172099792315.dkr.ecr.eu-central-1.amazonaws.com/samply/catalog-api:latest
+      - docker push 172099792315.dkr.ecr.eu-central-1.amazonaws.com/samply/catalog-api:${VERSION}
+      - helm s3 push ./helm/catalog-api-*.tgz samply-charts
       # https://de.slideshare.net/AmazonWebServices/from-code-to-a-running-container-aws-summit-tel-aviv-2019-137469017
