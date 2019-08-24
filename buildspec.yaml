@@ -35,8 +35,8 @@ phases:
       - mvn -B clean package
       - docker build -f api/src/main/docker/Dockerfile.jvm -t catalog-api:${VERSION} ./api
       - docker images
-      - docker tag 172099792315.dkr.ecr.eu-central-1.amazonaws.com/samply/catalog-api:${VERSION}
-      - docker tag 172099792315.dkr.ecr.eu-central-1.amazonaws.com/samply/catalog-api:latest
+      - docker tag catalog-api:${VERSION} 172099792315.dkr.ecr.eu-central-1.amazonaws.com/samply/catalog-api:${VERSION}
+      - docker tag catalog-api:${VERSION} 172099792315.dkr.ecr.eu-central-1.amazonaws.com/samply/catalog-api:latest
       - docker images
       - helm package ./helm/catalog-api --app-version ${VERSION}
   post_build:
