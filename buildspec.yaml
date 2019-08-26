@@ -34,4 +34,4 @@ phases:
       - echo push latest Docker images to ECR...
       - docker push ${IMAGE_REPO_HOST}/samply/catalog-api:${VERSION}
       - docker push ${IMAGE_REPO_HOST}/samply/catalog-api
-      - helm s3 push ./catalog-api-0.0.1.tgz samply-charts
+      - helm s3 push --force ./catalog-api-0.0.1.tgz samply-charts
