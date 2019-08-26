@@ -14,6 +14,7 @@ phases:
       - echo logging in to AWS ECR...
       - $(aws ecr get-login --no-include-email --region eu-central-1)
       - curl -L https://git.io/get_helm.sh | bash
+      - helm init --client-only
       - helm plugin install https://github.com/hypnoglow/helm-s3.git
       - helm s3 init s3://samply-helm-charts/charts
       - helm repo add samply-charts s3://samply-helm-charts/charts
