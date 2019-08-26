@@ -13,18 +13,7 @@ phases:
     commands:
       - echo logging in to AWS ECR...
       - $(aws ecr get-login --no-include-email --region eu-central-1)
-      - export KUBECONFIG=$HOME/.kube/config
-      - curl -sS -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/aws-iam-authenticator
-      - curl -sS -o kubectl https://amazon-eks.s3-eu-central-1.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/kubectl
-      - chmod +x ./kubectl ./aws-iam-authenticator
-      - CREDENTIALS=$(aws sts assume-role --role-arn arn:aws:iam::172099792315:role/EKSDeployment --role-session-name codebuild-kubectl --duration-seconds 900)
-      - export AWS_ACCESS_KEY_ID="$(echo ${CREDENTIALS} | jq -r '.Credentials.AccessKeyId')"
-      - export AWS_SECRET_ACCESS_KEY="$(echo ${CREDENTIALS} | jq -r '.Credentials.SecretAccessKey')"
-      - export AWS_SESSION_TOKEN="$(echo ${CREDENTIALS} | jq -r '.Credentials.SessionToken')"
-      - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
-      - aws eks update-kubeconfig --name cmand
       - curl -L https://git.io/get_helm.sh | bash
-      - helm init --service-account tiller --debug
       - helm plugin install https://github.com/hypnoglow/helm-s3.git
       - helm s3 init s3://samply-helm-charts/charts
       - helm repo add samply-charts s3://samply-helm-charts/charts
@@ -35,14 +24,13 @@ phases:
       - mvn -B clean package
       - docker build -f api/src/main/docker/Dockerfile.jvm -t catalog-api:${VERSION} ./api
       - docker images
-      - docker tag catalog-api:${VERSION} 172099792315.dkr.ecr.eu-central-1.amazonaws.com/samply/catalog-api:${VERSION}
-      - docker tag catalog-api:${VERSION} 172099792315.dkr.ecr.eu-central-1.amazonaws.com/samply/catalog-api:latest
+      - docker tag catalog-api:${VERSION} ${IMAGE_REPO_HOST}/samply/catalog-api:${VERSION}
+      - docker tag catalog-api:${VERSION} ${IMAGE_REPO_HOST}/samply/catalog-api:latest
       - docker images
       - helm package ./helm/catalog-api --app-version ${VERSION}
   post_build:
     commands:
       - echo push latest Docker images to ECR...
-      - docker push 172099792315.dkr.ecr.eu-central-1.amazonaws.com/samply/catalog-api:${VERSION}
-      - docker push 172099792315.dkr.ecr.eu-central-1.amazonaws.com/samply/catalog-api
+      - docker push ${IMAGE_REPO_HOST}/samply/catalog-api:${VERSION}
+      - docker push ${IMAGE_REPO_HOST}/samply/catalog-api
       - helm s3 push ./catalog-api-0.0.1.tgz samply-charts
-      # https://de.slideshare.net/AmazonWebServices/from-code-to-a-running-container-aws-summit-tel-aviv-2019-137469017
