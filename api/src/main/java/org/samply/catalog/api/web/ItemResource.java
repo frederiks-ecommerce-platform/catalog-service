@@ -16,6 +16,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirements;
 import org.samply.catalog.api.model.Error;
 import org.samply.catalog.api.model.ItemCreationDTO;
 import org.samply.catalog.api.model.ItemDTO;
@@ -26,6 +28,9 @@ import org.samply.catalog.api.model.SellerId;
 @Path("/items")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@SecurityRequirements({
+    @SecurityRequirement(name = "oauth2")
+})
 public class ItemResource {
 
     @POST
