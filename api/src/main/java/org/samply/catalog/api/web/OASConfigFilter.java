@@ -13,7 +13,7 @@ public class OASConfigFilter implements OASFilter {
         Config config = ConfigProvider.getConfig();
 
         Optional<String> tokenUrl = config.getOptionalValue(
-                "samply.oauth2.token-url",
+                "catalog-api.oauth.token-url",
                 String.class
         );
         tokenUrl.ifPresent(securityScheme.getFlows().getPassword()::setTokenUrl);

@@ -4,6 +4,8 @@ metadata:
   name: {{ include "catalog-api.fullname" . }}
   labels:
 {{ include "catalog-api.labels" . | indent 4 }}
+  annotations:
+    checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -36,6 +38,9 @@ spec:
             httpGet:
               path: /swagger-ui/
               port: http
+          envFrom:
+          - configMapRef:
+              name: catalog-api
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
