@@ -23,15 +23,19 @@ import org.samply.catalog.api.model.ItemCreationDTO;
 import org.samply.catalog.api.model.ItemDTO;
 import org.samply.catalog.api.model.ItemId;
 import org.samply.catalog.api.model.SellerId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @Path("/items")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @SecurityRequirements({
-    @SecurityRequirement(name = "oauth2")
+        @SecurityRequirement(name = "oauth2")
 })
 public class ItemResource {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ItemResource.class);
 
     @POST
     @APIResponses({
@@ -51,6 +55,7 @@ public class ItemResource {
     })
     public Response addItem(@Valid @NotNull @HeaderParam("X-User-Id") SellerId sellerId,
                             @Valid @NotNull @Named("item") ItemCreationDTO item) {
+        LOG.info("POST Item for {}", sellerId);
         ItemDTO createdItem = ItemDTO.of(
                 ItemId.of("123"),
                 item.getTitle(),
