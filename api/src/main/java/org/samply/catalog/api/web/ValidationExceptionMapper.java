@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 import com.google.common.collect.Iterators;
-import org.samply.catalog.api.model.Error;
+import org.samply.catalog.api.domain.model.Error;
 
 @Provider
 public class ValidationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {

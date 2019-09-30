@@ -10,8 +10,8 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
-import org.samply.catalog.api.model.Category;
-import org.samply.catalog.api.model.ItemCreationDTO;
+import org.samply.catalog.api.domain.model.Category;
+import org.samply.catalog.api.domain.model.ItemCreationDTO;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest

@@ -1,4 +1,4 @@
-package org.samply.catalog.api.model;
+package org.samply.catalog.api.domain.model;
 
 import java.math.BigDecimal;
 import lombok.Value;

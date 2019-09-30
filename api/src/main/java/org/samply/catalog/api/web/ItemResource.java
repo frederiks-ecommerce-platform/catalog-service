@@ -18,11 +18,11 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirements;
-import org.samply.catalog.api.model.Error;
-import org.samply.catalog.api.model.ItemCreationDTO;
-import org.samply.catalog.api.model.ItemDTO;
-import org.samply.catalog.api.model.ItemId;
-import org.samply.catalog.api.model.SellerId;
+import org.samply.catalog.api.domain.model.Error;
+import org.samply.catalog.api.domain.model.ItemCreationDTO;
+import org.samply.catalog.api.domain.model.ItemDTO;
+import org.samply.catalog.api.domain.model.ItemId;
+import org.samply.catalog.api.domain.model.SellerId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package org.samply.catalog.api.model;
+package org.samply.catalog.api.domain.model;
 
 import lombok.Value;
 
