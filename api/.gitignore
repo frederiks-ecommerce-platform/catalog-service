@@ -33,3 +33,5 @@ pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
 release.properties
+src/main/java/org/samply/catalog/api/domain/model/Item.java
+src/main/java/org/samply/catalog/api/domain/model/Category.java

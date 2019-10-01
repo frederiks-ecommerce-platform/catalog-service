@@ -2,6 +2,7 @@ package org.samply.catalog.api.web;
 
 import static javax.ws.rs.core.Response.Status.CREATED;
 import static org.eclipse.microprofile.openapi.annotations.enums.SchemaType.ARRAY;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -21,10 +22,11 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 import org.samply.catalog.api.domain.model.Error;
 import org.samply.catalog.api.domain.model.ItemCreationDTO;
 import org.samply.catalog.api.domain.model.ItemDTO;
-import org.samply.catalog.api.domain.model.ItemId;
 import org.samply.catalog.api.domain.model.SellerId;
+import org.samply.catalog.api.domain.service.ItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import io.reactivex.Single;
 
 
 @Path("/items")
@@ -36,6 +38,9 @@ import org.slf4j.LoggerFactory;
 public class ItemResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(ItemResource.class);
+
+    @Inject
+    ItemService itemService;
 
     @POST
     @APIResponses({
@@ -53,20 +58,12 @@ public class ItemResource {
                 )
             )
     })
-    public Response addItem(@Valid @NotNull @HeaderParam("X-User-Id") SellerId sellerId,
-                            @Valid @NotNull @Named("item") ItemCreationDTO item) {
+    public Single<Response> addItem(@Valid @NotNull @HeaderParam("X-User-Id") SellerId sellerId,
+                                    @Valid @NotNull @Named("item") ItemCreationDTO item) {
         LOG.info("POST Item for {}", sellerId);
-        ItemDTO createdItem = ItemDTO.of(
-                ItemId.of("123"),
-                item.getTitle(),
-                item.getDescription(),
-                item.getPrice(),
-                item.getCategory()
-        );
 
-        return Response.status(CREATED)
-                       .entity(createdItem)
-                       .build();
+        return itemService.addItem(item, sellerId)
+                          .map(i -> Response.status(CREATED).entity(i).build());
     }
 
 }
